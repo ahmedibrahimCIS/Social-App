@@ -19,6 +19,8 @@ await connectionDB()
 
 app.use(morgan('dev'))
 
+app.get('/', (req, res) => res.send('Hello World!'))
+
 app.use('/uploads',express.static('uploads'))
 app.use(cors())
 app.use(express.json())
