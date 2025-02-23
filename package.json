@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon app.js",
-    "start": "node --watch app.js"
+    "start": "node  app.js"
+  },
+  "engines": {
+    "node": "22.x"
   },
   "keywords": [],
   "author": "",

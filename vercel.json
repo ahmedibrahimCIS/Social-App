@@ -1,0 +1,13 @@
+{
+    "version": 2,
+    "name": "social-app",
+    "builds": [
+      { "src": "app.js", "use": "@vercel/node" }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/"
+      }
+    ]
+}
