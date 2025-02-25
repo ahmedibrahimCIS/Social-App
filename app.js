@@ -19,7 +19,9 @@ await connectionDB()
 
 app.use(morgan('dev'))
 
-app.get('/', (req, res) => res.send('Hello World!'))
+app.get("/", (req, res) => {
+    res.json({ message: "API is working!" });
+  });
 
 app.use('/uploads',express.static('uploads'))
 app.use(cors())
@@ -36,4 +38,4 @@ app.use('/', notFoundHandler)
 app.use(globalErrorHandler)
 
 
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+app.listen(port, () => console.log(`App listening on port ${port}!`))

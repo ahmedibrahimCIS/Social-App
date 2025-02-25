@@ -98,23 +98,6 @@ export const getSinglePost = async(req,res,next)=>{
 }
 
 export const activePosts = async(req,res,next)=>{
-    // let posts;
-
-    // if(req.user.role === roles.ADMIN) {
-    //    posts = await dbService.find({model:postModel,
-    //     filter:{isDeleted:false},
-    //     populate:[{path:"createdBy",select:"userName image -_id"}]})
-
-        
-    // }
-    // else{
-
-    //     posts = await dbService.find({model:postModel,
-    //         filter:{isDeleted:false , createdBy:req.user._id},
-    //         populate:[{path:"createdBy",select:"userName image -_id"}]})
-         
-    // }
-
     //Query Stream
     const cursor = postModel.find({isDeleted:false}).cursor()
 
