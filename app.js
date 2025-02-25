@@ -13,15 +13,11 @@ import adminRouter from './src/Modules/Admin/adminController.js'
 
 
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
 await connectionDB()
 
 app.use(morgan('dev'))
-
-app.get("/", (req, res) => {
-    res.json({ message: "API is working!" });
-  });
 
 app.use('/uploads',express.static('uploads'))
 app.use(cors())
@@ -33,9 +29,14 @@ app.use('/post',postRouter)
 app.use('/comments',commentRouter)
 app.use('/admin', adminRouter)
 
+//Test Route
+app.get("/", (req, res) => {
+    res.json({ message: "API is working!" });
+  });
+
 app.use('/', notFoundHandler)
 
 app.use(globalErrorHandler)
 
-
-app.listen(port, () => console.log(`App listening on port ${port}!`))
+export default app
+// app.listen(port, () => console.log(`App listening on port ${port}!`))
