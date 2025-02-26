@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import { rateLimit } from 'express-rate-limit'
 import {notFoundHandler} from './src/utils/ErrorHandling/notFoundHandler.js'
 import {globalErrorHandler} from './src/utils/ErrorHandling/asyncHandler.js'
 import authRouter from './src/Modules/Auth/authController.js'
@@ -12,12 +13,27 @@ import adminRouter from './src/Modules/Admin/adminController.js'
 
 
 
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+	standardHeaders: true,
+  handler: (req, res, next,options) => {
+    return next(new Error(options.message , {cause:429}));
+}})
+
+
+
+
 const app = express()
 const port = process.env.PORT || 3000
 
 await connectionDB()
 
 app.use(morgan('dev'))
+
+
+// Apply the rate limiting middleware to all requests.
+app.use(limiter)
 
 app.use('/uploads',express.static('uploads'))
 app.use(cors())
@@ -39,4 +55,3 @@ app.use('/', notFoundHandler)
 app.use(globalErrorHandler)
 
 export default app
-// app.listen(port, () => console.log(`App listening on port ${port}!`))
