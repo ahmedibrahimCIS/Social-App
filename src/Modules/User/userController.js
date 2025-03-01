@@ -18,6 +18,9 @@ router.patch('/updateProfile',validation(userValidation.updateProfileSchema),aut
 // router.delete('/DelProfilePicture' ,authentication(),upload(fileValidation.images,'upload/user').single('image'),asyncHandler(userService.deleteProfilePicture))
 router.post('/uploadCloud' ,authentication(),uploadCloud().single('image'),asyncHandler(userService.uploadCloudImage))
 router.delete('/deleteImageCloud' ,authentication(),uploadCloud().single('image'),asyncHandler(userService.deleteImageOnCloud))
+router.post('/friend-request/:friendId', authentication(),validation(userValidation.sendFriendRequestSchema),asyncHandler(userService.sendFriendRequest))
+router.post('/friend-request/:friendId/accept', authentication(),validation(userValidation.acceptFriendRequestSchema),asyncHandler(userService.acceptFriendRequest))
+
 
 
 

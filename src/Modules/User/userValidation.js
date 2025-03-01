@@ -23,3 +23,13 @@ export const updateProfileSchema = joi.object({
     DOB:generalFields.DOB,
     role:generalFields.role
 }).required()
+
+export const sendFriendRequestSchema = joi.object({
+    friendId: generalFields.id.required()
+    
+}).required()
+
+export const acceptFriendRequestSchema = joi.object({
+    friendId: generalFields.id.required()
+    
+}).required()

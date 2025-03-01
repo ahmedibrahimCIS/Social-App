@@ -84,6 +84,8 @@ const userSchema = new Schema({
     changeCredentials:Date,
     tempEmail:String,
     tempEmailOTP:String,
+    friendRequests:[{type:Types.ObjectId, ref:"user"}],
+    friends:[{type:Types.ObjectId, ref:"user"}]
 },{timestamps:true})
 
 userSchema.pre("save",function(next){

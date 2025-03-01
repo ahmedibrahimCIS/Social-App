@@ -5,6 +5,7 @@ import { emailEmitter } from '../../utils/Email/emailEmit.js'
 import {hash , compare} from '../../utils/hashing/hash.js'
 import fs from 'fs'
 import cloudinary from '../../utils/File Upload/cloudinaryConfig.js'
+import {areFriends , requestExists} from './helper/friendReq.js'
 
 export const getProfile = async (req, res, next) => {
     const user = await dbService.findOne({model:userModel,filter:{_id:req.user._id},populate:[{path:"viewers.userId",select:"userName email image"}]});
@@ -175,4 +176,42 @@ export const deleteImageOnCloud = async(req,res,next)=>{
 
     await user.save()
     return res.status(200).json({success:true,data:{user}})
+}
+
+export const sendFriendRequest = async (req, res, next) => {
+    const {friendId} = req.params
+    const user = req.user
+    
+    const friend = await dbService.findOne({model:userModel,filter:{_id:friendId , isDeleted:false}})
+    if(!friend) return next(new Error("Friend not found"),{cause:400})
+
+    if (areFriends(user , friend) || requestExists(user , friend)) 
+        return next(new Error("Cannot send friend request"),{cause:400})
+        
+    friend.friendRequests.push(user._id)
+    await friend.save()
+
+    return res.status(200).json({message:"Request Sent Successfully" , success: true })
+
+}
+
+export const acceptFriendRequest = async (req, res, next) => {
+    const {friendId} = req.params
+    const user = req.user
+    
+    const friend = await dbService.findOne({model:userModel,filter:{_id:friendId , isDeleted:false}})
+    if(!friend) return next(new Error("Friend not found"),{cause:400})
+
+    if (areFriends(user , friend)) 
+        return next(new Error("Already friends"),{cause:400})
+
+
+    friend.friends.push(user._id)
+    user.friends.push(friend._id)
+    user.friendRequests = user.friendRequests.filter((id) => id.toString() !== friendId)
+    await user.save()
+    await friend.save()         
+
+    return res.status(200).json({message:"Request Accepted Successfully" , success: true })
+
 }

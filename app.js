@@ -10,6 +10,7 @@ import postRouter from './src/Modules/Post/postController.js'
 import commentRouter from './src/Modules/Comments/commentController.js'
 import morgan from 'morgan'
 import adminRouter from './src/Modules/Admin/adminController.js'
+import chatRouter from './src/Modules/Chat/chatController.js'
 
 
 
@@ -44,6 +45,7 @@ app.use('/user',userRouter)
 app.use('/post',postRouter)
 app.use('/comments',commentRouter)
 app.use('/admin', adminRouter)
+app.use('/chat' , chatRouter) 
 
 //Test Route
 app.get("/", (req, res) => {
@@ -53,5 +55,9 @@ app.get("/", (req, res) => {
 app.use('/', notFoundHandler)
 
 app.use(globalErrorHandler)
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+})
 
 export default app
